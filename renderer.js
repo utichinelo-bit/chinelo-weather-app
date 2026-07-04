@@ -147,15 +147,15 @@ function windDirLabel(deg) {
 }
 
 const MASCOT_MAP = {
-  "sunny-day": "clear sunny.png",
-  "sunny-night": "clear night.png",
-  "cloudy-day-2": "cloudy sunny.png",
-  "cloudy-day-3": "cloudy.png",
-  "cloudy-night": "night cloudy.png",
-  fog: "haze.png",
-  rainy: "rainy.png",
-  snow: "rainy.png",
-  storm: "thunderstorm.png",
+  "sunny-day": "clear sunny.jpeg",
+  "sunny-night": "clear night.jpeg",
+  "cloudy-day-2": "cloudy sunny.jpeg",
+  "cloudy-day-3": "cloudy.jpeg",
+  "cloudy-night": "night cloudy.jpeg",
+  fog: "haze.jpeg",
+  rainy: "rainy.jpeg",
+  snow: "rainy.jpeg",
+  storm: "thunderstorm.jpeg",
 };
 
 function mascotFile(group, isDay, code) {
