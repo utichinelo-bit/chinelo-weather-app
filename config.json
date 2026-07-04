@@ -1,0 +1,5 @@
+{
+  "defaultCity": "",
+  "cacheTTL": 1800000,
+  "units": "celsius"
+}
