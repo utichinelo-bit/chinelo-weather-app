@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     http-equiv="Content-Security-Policy"
     content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.open-meteo.com https://geocoding-api.open-meteo.com https://nominatim.openstreetmap.org;"
@@ -50,7 +51,6 @@
 
     #app {
       min-height: 100%;
-      zoom: 0.8;
       background: linear-gradient(180deg, var(--c-top, #3e6e8e) 0%, var(--c-mid, #f2876b) 55%, var(--c-bottom, #ffd9a0) 100%);
       transition: background 0.8s ease;
     }
@@ -143,10 +143,12 @@
       border: none;
       color: var(--text-faint);
       cursor: pointer;
-      padding: 4px;
+      padding: 8px;
       border-radius: 50%;
       transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
       flex-shrink: 0;
+      min-width: 40px;
+      min-height: 40px;
     }
     .locate-btn:hover {
       color: var(--text);
@@ -167,15 +169,19 @@
       background: rgba(10, 13, 18, 0.96);
       border: 1px solid var(--line);
       border-radius: 12px;
-      max-height: 180px;
+      max-height: 220px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .results-list li {
-      padding: clamp(12px, 2vw, 14px) clamp(16px, 2.5vw, 20px);
+      padding: clamp(14px, 2.5vw, 18px) clamp(16px, 2.5vw, 20px);
       cursor: pointer;
-      font-size: clamp(13px, 1.8vw, 14px);
+      font-size: clamp(14px, 1.8vw, 15px);
       border-bottom: 1px solid var(--line-soft);
       transition: background var(--dur) var(--ease);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
     }
     .results-list li:last-child { border-bottom: none; }
     .results-list li:hover, .results-list li:focus-visible {
@@ -293,7 +299,7 @@
     .details-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: clamp(8px, 1.5vw, 10px);
+      gap: clamp(10px, 1.5vw, 12px);
       margin-top: clamp(22px, 4vw, 30px);
     }
 
@@ -394,7 +400,7 @@
     .extras-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: clamp(8px, 1.2vw, 10px);
+      gap: clamp(10px, 1.5vw, 12px);
     }
     .extra-card {
       background: var(--card-light);
@@ -646,6 +652,24 @@
     }
 
     /* ============== RESPONSIVE BREAKPOINTS ============== */
+
+    @media (min-width: 900px) {
+      #app {
+        zoom: 0.8;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .details-row {
+        grid-template-columns: 1fr;
+      }
+      .extras-grid {
+        grid-template-columns: 1fr;
+      }
+      .current-temp {
+        font-size: clamp(52px, 18vw, 64px);
+      }
+    }
 
     @media (min-width: 480px) {
       .extras-grid {
