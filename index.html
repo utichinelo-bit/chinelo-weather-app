@@ -76,7 +76,6 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
     .scene {
@@ -126,6 +125,7 @@
     }
     #city-input {
       flex: 1;
+      min-width: 0;
       background: transparent;
       border: none;
       color: #fff;
@@ -151,13 +151,6 @@
     .locate-btn:hover {
       background: rgba(255,255,255,0.1);
       border-color: rgba(255,255,255,0.5);
-    }
-    .locate-btn:active {
-      background: rgba(255,255,255,0.18);
-    }
-    .locate-btn:hover {
-      color: var(--text);
-      background: rgba(255,255,255,0.1);
     }
     .locate-btn:active {
       background: rgba(255,255,255,0.18);
@@ -674,6 +667,10 @@
       }
       .current-temp {
         font-size: clamp(52px, 18vw, 64px);
+      }
+      .locate-btn {
+        font-size: 11px;
+        padding: 5px 8px;
       }
     }
 
