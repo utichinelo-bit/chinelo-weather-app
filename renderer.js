@@ -686,7 +686,7 @@ function renderHourlyForecast(hourly, currentTime, heroGroup) {
     el.className = `hourly-item${isNow ? " now" : ""}`;
     el.innerHTML = `
       <span class="hourly-time">${label}</span>
-      <div class="hourly-icon">${iconTag(code, condName, "light", false)}</div>
+      <div class="hourly-icon">${iconTag(code, condName, "light", h < 6 || h >= 18)}</div>
       <span class="hourly-temp">${temp}°</span>
     `;
     els.hourlyScroll.appendChild(el);
