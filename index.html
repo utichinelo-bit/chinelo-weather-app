@@ -136,19 +136,24 @@
     #city-input:focus { outline: none; }
 
     .locate-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: none;
-      border: none;
-      color: var(--text-faint);
+      border: 1px solid var(--line);
+      color: var(--text);
       cursor: pointer;
-      padding: 8px;
-      border-radius: 50%;
-      transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+      padding: clamp(6px, 1vw, 8px) clamp(10px, 1.5vw, 14px);
+      border-radius: 999px;
+      font-size: clamp(12px, 1.5vw, 13px);
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
       flex-shrink: 0;
-      min-width: 40px;
-      min-height: 40px;
+    }
+    .locate-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .locate-btn:active {
+      background: rgba(255,255,255,0.18);
     }
     .locate-btn:hover {
       color: var(--text);
@@ -719,12 +724,7 @@
             <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
           <input id="city-input" type="text" placeholder="Search a city…" aria-label="City name" />
-          <button id="locate-btn" type="button" class="locate-btn" aria-label="Use my location" title="Use my location">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 2v4m0 12v4m-10-10h4m12 0h4"/>
-            </svg>
-          </button>
+          <button id="locate-btn" type="button" class="locate-btn" aria-label="Use my location" title="Use my location">Use my location</button>
         </form>
 
         <ul id="results-list" class="results-list hidden"></ul>
