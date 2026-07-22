@@ -461,7 +461,7 @@ async function detectLocation() {
     if (err.code === 1) {
       setStatus("Location permission denied.");
     } else {
-      setStatus(`Location failed: ${err.message}`);
+      setStatus(humanError(err, "Location"));
     }
   } finally {
     btn.classList.remove("loading");
@@ -509,6 +509,16 @@ function setStatus(text) {
   els.status.textContent = text;
 }
 
+function networkErrorMessage(context) {
+  if (!navigator.onLine) return "No internet connection. Please check your network and try again.";
+  return `Could not reach the server. Check your internet connection and try again.`;
+}
+
+function humanError(err, context) {
+  if (err.name === "TypeError" || /fetch|network|failed/i.test(err.message)) return networkErrorMessage(context);
+  return `${context} failed. Please try again.`;
+}
+
 
 
 els.form.addEventListener("submit", async (e) => {
@@ -546,7 +556,7 @@ els.form.addEventListener("submit", async (e) => {
     setStatus("Multiple matches — pick one:");
     showResults(results);
   } catch (err) {
-    setStatus(`Search failed: ${err.message}`);
+    setStatus(humanError(err, "Search"));
   }
 });
 
@@ -604,7 +614,7 @@ async function loadForecast(geo) {
     renderDashboard(geo, data);
     setStatus("");
   } catch (err) {
-    setStatus(`Forecast failed: ${err.message}`);
+    setStatus(humanError(err, "Forecast"));
   }
 }
 
