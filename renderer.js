@@ -11,6 +11,39 @@ async function loadConfig() {
 }
 
 // ---------------------------------------------------------------------------
+// Theme (dark / light)
+// ---------------------------------------------------------------------------
+function isDark() {
+  return document.documentElement.getAttribute("data-theme") === "dark";
+}
+
+function toggleTheme() {
+  const next = isDark() ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("wx_theme", next);
+  updateThemeIcon();
+  if (lastGeo && lastData) renderDashboard(lastGeo, lastData);
+}
+
+function updateThemeIcon() {
+  const dark = isDark();
+  const sun = document.getElementById("theme-icon-sun");
+  const moon = document.getElementById("theme-icon-moon");
+  if (sun) sun.style.display = dark ? "none" : "";
+  if (moon) moon.style.display = dark ? "" : "none";
+}
+
+let lastGeo = null, lastData = null;
+
+function applyTheme() {
+  const saved = localStorage.getItem("wx_theme");
+  if (saved === "dark" || saved === "light") {
+    document.documentElement.setAttribute("data-theme", saved);
+  }
+  updateThemeIcon();
+}
+
+// ---------------------------------------------------------------------------
 // Cache (localStorage with TTL)
 // ---------------------------------------------------------------------------
 const Cache = {
@@ -137,8 +170,7 @@ function iconTag(code, alt, folder, isNight) {
 }
 
 function iconFolder(group, isDay) {
-  if (isDay === false) return "dark";
-  return group === "sunny" ? "light" : "dark";
+  return isDark() ? "dark" : "light";
 }
 
 function windDirLabel(deg) {
@@ -479,6 +511,7 @@ const els = {
   form: document.getElementById("search-form"),
   input: document.getElementById("city-input"),
   locateBtn: document.getElementById("locate-btn"),
+  themeToggle: document.getElementById("theme-toggle"),
   mascotBanner: document.getElementById("mascot-banner"),
   resultsList: document.getElementById("results-list"),
   status: document.getElementById("status"),
@@ -561,6 +594,7 @@ els.form.addEventListener("submit", async (e) => {
 });
 
 els.locateBtn.addEventListener("click", detectLocation);
+els.themeToggle.addEventListener("click", toggleTheme);
 
 function showResults(results) {
   els.resultsList.innerHTML = "";
@@ -619,6 +653,8 @@ async function loadForecast(geo) {
 }
 
 function renderDashboard(geo, data) {
+  lastGeo = geo;
+  lastData = data;
   const current = data.current || {};
   const daily = data.daily || {};
   const [label, group] = weatherInfo(current.weather_code ?? 0);
@@ -696,7 +732,7 @@ function renderHourlyForecast(hourly, currentTime, heroGroup) {
     el.className = `hourly-item${isNow ? " now" : ""}`;
     el.innerHTML = `
       <span class="hourly-time">${label}</span>
-      <div class="hourly-icon">${iconTag(code, condName, "light", h < 6 || h >= 18)}</div>
+      <div class="hourly-icon">${iconTag(code, condName, iconFolder(null, h >= 6 && h < 18), h < 6 || h >= 18)}</div>
       <span class="hourly-temp">${temp}°</span>
     `;
     els.hourlyScroll.appendChild(el);
@@ -751,7 +787,7 @@ function renderForecastList(daily) {
     row.className = "day-row";
     row.innerHTML = `
       <div class="day-left">
-        <div class="day-icon">${iconTag(codes[i], label, "light", false)}</div>
+        <div class="day-icon">${iconTag(codes[i], label, iconFolder(null, true), false)}</div>
         <div>
           <p class="day-name">${dayName}</p>
           <p class="day-condition">${label}</p>
@@ -772,6 +808,7 @@ function renderForecastList(daily) {
 // ---------------------------------------------------------------------------
 
 (async function init() {
+  applyTheme();
   await loadConfig();
   if (CONFIG.defaultCity) {
     els.input.value = CONFIG.defaultCity;

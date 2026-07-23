@@ -716,6 +716,63 @@
         padding-right: 0;
       }
     }
+
+    /* ============== DARK MODE ============== */
+
+    #app { position: relative; }
+
+    [data-theme="dark"] #app::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 0;
+      pointer-events: none;
+      transition: background 0.5s ease;
+    }
+
+    [data-theme="dark"] #app {
+      --card-light: rgba(30,33,40,0.85);
+      --card-light-hover: rgba(40,44,52,0.85);
+      --card-light-active: rgba(50,54,62,0.85);
+    }
+
+    [data-theme="dark"] .detail-item,
+    [data-theme="dark"] .hourly-item,
+    [data-theme="dark"] .extra-card,
+    [data-theme="dark"] .day-row {
+      --ink: #e8eaf0;
+      --ink-muted: rgba(232,234,240,0.58);
+    }
+
+    [data-theme="dark"] .weather-display .detail-label,
+    [data-theme="dark"] .weather-display .extra-label,
+    [data-theme="dark"] .weather-display .hourly-time {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+      flex-shrink: 0;
+      min-width: 36px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .theme-toggle:active {
+      background: rgba(255,255,255,0.18);
+    }
   </style>
 </head>
 <body>
@@ -732,6 +789,18 @@
           </svg>
           <input id="city-input" type="text" placeholder="Search a city…" aria-label="City name" />
           <button id="locate-btn" type="button" class="locate-btn" aria-label="Use my location" title="Use my location">Use my location</button>
+          <button id="theme-toggle" type="button" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <svg id="theme-icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg id="theme-icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
         </form>
 
         <ul id="results-list" class="results-list hidden"></ul>
