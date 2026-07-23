@@ -487,7 +487,7 @@ async function detectLocation() {
   try {
     const coords = await getUserLocation();
     setStatus("Location found. Loading forecast…");
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 1000));
     const place = await reverseGeocode(coords.latitude, coords.longitude);
     if (place.name) {
       els.input.value = place.name;
