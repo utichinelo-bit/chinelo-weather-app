@@ -39,8 +39,18 @@ function applyTheme() {
   const saved = localStorage.getItem("wx_theme");
   if (saved === "dark" || saved === "light") {
     document.documentElement.setAttribute("data-theme", saved);
+  } else {
+    const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
   }
   updateThemeIcon();
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (!localStorage.getItem("wx_theme")) {
+      document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+      updateThemeIcon();
+      if (lastGeo && lastData) renderDashboard(lastGeo, lastData);
+    }
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -476,6 +486,8 @@ async function detectLocation() {
   setStatus("Detecting location…");
   try {
     const coords = await getUserLocation();
+    setStatus("Location found. Loading forecast…");
+    await new Promise((r) => setTimeout(r, 3000));
     const place = await reverseGeocode(coords.latitude, coords.longitude);
     if (place.name) {
       els.input.value = place.name;
@@ -558,7 +570,22 @@ els.form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const city = els.input.value.trim();
   if (!city) return;
+  searchCity(city);
+});
 
+let searchTimer = null;
+els.input.addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  const city = els.input.value.trim();
+  if (city.length < 2) {
+    setStatus("");
+    els.resultsList.classList.add("hidden");
+    return;
+  }
+  searchTimer = setTimeout(() => searchCity(city), 400);
+});
+
+async function searchCity(city) {
   setStatus("Searching…");
   els.resultsList.classList.add("hidden");
   els.resultsList.innerHTML = "";
@@ -591,7 +618,7 @@ els.form.addEventListener("submit", async (e) => {
   } catch (err) {
     setStatus(humanError(err, "Search"));
   }
-});
+}
 
 els.locateBtn.addEventListener("click", detectLocation);
 els.themeToggle.addEventListener("click", toggleTheme);
