@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 *.log
 session-ses_0d34.md
+web-app.json
