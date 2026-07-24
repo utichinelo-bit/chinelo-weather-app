@@ -544,6 +544,8 @@ const els = {
   hourlyScroll: document.getElementById("hourly-scroll"),
   forecastList: document.getElementById("forecast-list"),
   windArrow: document.getElementById("wind-arrow"),
+  arrowUp: document.querySelector(".arrow-up"),
+  arrowDown: document.querySelector(".arrow-down"),
   windDirValue: document.getElementById("wind-dir-value"),
   pressureValue: document.getElementById("pressure-value"),
   extrasUvValue: document.getElementById("extras-uv-value"),
@@ -781,7 +783,7 @@ function renderExtras(current, daily) {
   if (wd != null) {
     els.windArrow.style.transform = `rotate(${wd}deg)`;
     els.windDirValue.textContent = `${windDirLabel(wd)} (${Math.round(wd)}°)`;
-    els.windArrow.src = `icon-set/dark/${windArrowFile(current.wind_speed_10m)}.svg`;
+    els.windArrow.src = `icon-set/${iconFolder(null, true)}/${windArrowFile(current.wind_speed_10m)}.svg`;
   } else {
     els.windArrow.style.display = "none";
     els.windDirValue.textContent = "—";
@@ -795,6 +797,9 @@ function renderExtras(current, daily) {
   const sunrise = daily.sunrise ? formatTime(daily.sunrise[0]) : "—";
   const sunset = daily.sunset ? formatTime(daily.sunset[0]) : "—";
   els.sunriseSunsetValue.textContent = `↑ ${sunrise}  ↓ ${sunset}`;
+  const arrowFolder = iconFolder(null, true);
+  if (els.arrowUp) els.arrowUp.src = `icon-set/${arrowFolder}/arrow_4.svg`;
+  if (els.arrowDown) els.arrowDown.src = `icon-set/${arrowFolder}/arrow_4.svg`;
 }
 
 function renderForecastList(daily) {
